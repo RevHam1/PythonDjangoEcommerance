@@ -116,15 +116,14 @@
       </div>
       <br />
 
-      <!-- <button id="complete-order" class="btn btn-primary navbar-btn text-white">
-        &nbsp; Complete order
-      </button> -->
-      <br />
+      <!-- <button id="complete-order" class="btn btn-primary navbar-btn text-white"> &nbsp; Complete order </button>
+               -->
 
+      <br />
       <div id="paypal-button-container"></div>
 
       <script
-        src="https://www.paypal.com/sdk/js?client-id=AZ5BIlZc-_n6joMAGjPN0sKQhVjTyjnQJLhzPbsymA3nF-gNbVp6xyRgFyXf3fZGTQPmmRgjDcnxIORg&currency=USD&intent=capture&enable-funding=venmo"
+        src="https://www.paypal.com/sdk/js?client-id=test&currency=USD&intent=capture&enable-funding=venmo"
         data-sdk-integration-source="integrationbuilder"
       ></script>
     </form>
@@ -137,16 +136,15 @@
   // Total price
   var total_price = "{{cart.get_total}}";
 
-  // Paypal Script
+  // PayPal Script
   const paypalButtonsComponent = paypal.Buttons({
     // optional styling for buttons
     // https://developer.paypal.com/docs/checkout/standard/customize/buttons-style-guide/
     style: {
-      color: "gold",
+      color: "blue",
       shape: "pill",
       layout: "vertical",
     },
-
     onInit: function (data, actions) {
       actions.disable();
       // Complete order - NO SHIPPING
@@ -208,7 +206,6 @@
           },
         ],
       };
-
       return actions.order.create(createOrderPayload);
     },
 
@@ -261,38 +258,37 @@
   });
 
   // Complete checkout
+
   /*
-  $(document).on("submit", function (e) {
-    e.preventDefault();
+    $(document).on('submit',  function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "complete-order" %}',
+            data: {
+                name: $('#name').val(),
+                email: $('#email').val(),
 
-    $.ajax({
-      type: "POST",
-      url: '{% url "complete-order" %}',
-      data: {
-        name: $("#name").val(),
-        email: $("#email").val(),
+                address1: $('#address1').val(),
+                address2: $('#address2').val(),
+                city: $('#city').val(),
+                
+                state: $('#state').val(),
+                zipcode: $('#zipcode').val(),
 
-        address1: $("#address1").val(),
-        address2: $("#address2").val(),
-        city: $("#city").val(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
 
-        state: $("#state").val(),
-        zipcode: $("#zipcode").val(),
+            success: function(json){
+                //console.log(json)
+                window.location.replace("{% url 'payment-success' %}");
+            },
 
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        action: "post",
-      },
-
-      success: function (json) {
-        //console.log(json)
-        window.location.replace("{% url 'payment-success' %}");
-      },
-
-      error: function (xhr, errmsg, err) {
-        window.location.replace("{% url 'payment-failed' %}");
-      },
-    });
-  });*/
+            error: function(xhr, errmsg, err){
+                window.location.replace("{% url 'payment-failed' %}");
+            }
+        });
+    })*/
 </script>
-
 {% endblock %}
